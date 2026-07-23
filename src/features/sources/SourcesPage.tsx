@@ -1,4 +1,5 @@
 import { DATA_SOURCES, MODULES } from '@/data/modules'
+import { LEGAL_DISCLAIMER } from '@/data/abbatech'
 import { SectionHeader } from '@/shared/components/SectionHeader'
 import { ExternalLink } from 'lucide-react'
 
@@ -7,8 +8,14 @@ export function SourcesPage() {
     <div className="space-y-8">
       <SectionHeader
         title="Fuentes de datos"
-        description="Documentación sencilla de de dónde sale cada información en RDIntelligence (fase frontend-only)."
+        description="Documentación sencilla de dónde sale cada información en RDIntelligence."
       />
+
+      <section className="rounded-2xl border border-rd-deep/10 bg-amber-50/80 p-5 text-sm leading-relaxed text-amber-950">
+        <h2 className="font-display text-lg font-bold text-rd-ink">Aviso legal</h2>
+        <p className="mt-2">{LEGAL_DISCLAIMER.dataSources}</p>
+        <p className="mt-3 text-xs text-amber-900/80">{LEGAL_DISCLAIMER.trademarks}</p>
+      </section>
 
       <div className="grid gap-4">
         {DATA_SOURCES.map((s) => (

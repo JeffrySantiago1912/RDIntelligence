@@ -57,6 +57,12 @@ Estas son las fuentes que mencionaste; **aún no hay integración directa** porq
 - Centro Nacional de Sismología (complemento a USGS)
 - NASA FIRMS — requiere MAP_KEY gratuita
 
+## Aviso legal
+
+RDIntelligence recopila y presenta información proveniente de fuentes públicas y APIs de datos abiertos. Cada institución mantiene la propiedad y responsabilidad sobre sus datos. RDIntelligence únicamente procesa y visualiza esta información con fines informativos.
+
+Las marcas, nombres y logotipos pertenecen a sus respectivos propietarios.
+
 ## Cómo correr
 
 ```bash
