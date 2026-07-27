@@ -35,7 +35,8 @@ export function SargassumPage() {
       />
       <Disclaimer>
         No existe (aún integrada) una API gratuita pública oficial de cobertura de sargazo para RD.
-        Este módulo estima presión estacional. Fuentes futuras: Copernicus / NOAA / satélite.
+        Este módulo estima presión estacional solo en playas costeras (no aplica a provincias
+        interiores como Santiago). Fuentes futuras: Copernicus / NOAA / satélite.
       </Disclaimer>
 
       {loading ? <LoadingState /> : null}

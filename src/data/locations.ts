@@ -3,6 +3,8 @@ export type Province = {
   name: string
   lat: number
   lon: number
+  /** Tiene costa caribeña/atlántica relevante para playas y sargazo. */
+  coastal: boolean
 }
 
 export type Beach = {
@@ -25,16 +27,16 @@ export type CitySector = {
 export const RD_CENTER = { lat: 18.7357, lon: -70.1627 }
 
 export const PROVINCES: Province[] = [
-  { id: 'distrito-nacional', name: 'Distrito Nacional', lat: 18.4861, lon: -69.9312 },
-  { id: 'santiago', name: 'Santiago', lat: 19.4517, lon: -70.697 },
-  { id: 'la-altagracia', name: 'La Altagracia', lat: 18.6159, lon: -68.7075 },
-  { id: 'puerto-plata', name: 'Puerto Plata', lat: 19.7934, lon: -70.6884 },
-  { id: 'la-romana', name: 'La Romana', lat: 18.4273, lon: -68.9728 },
-  { id: 'san-pedro', name: 'San Pedro de Macorís', lat: 18.4539, lon: -69.3088 },
-  { id: 'barahona', name: 'Barahona', lat: 18.2085, lon: -71.1008 },
-  { id: 'samana', name: 'Samaná', lat: 19.2056, lon: -69.3369 },
-  { id: 'san-cristobal', name: 'San Cristóbal', lat: 18.4167, lon: -70.1 },
-  { id: 'duarte', name: 'Duarte', lat: 19.2167, lon: -70.25 },
+  { id: 'distrito-nacional', name: 'Distrito Nacional', lat: 18.4861, lon: -69.9312, coastal: true },
+  { id: 'santiago', name: 'Santiago', lat: 19.4517, lon: -70.697, coastal: false },
+  { id: 'la-altagracia', name: 'La Altagracia', lat: 18.6159, lon: -68.7075, coastal: true },
+  { id: 'puerto-plata', name: 'Puerto Plata', lat: 19.7934, lon: -70.6884, coastal: true },
+  { id: 'la-romana', name: 'La Romana', lat: 18.4273, lon: -68.9728, coastal: true },
+  { id: 'san-pedro', name: 'San Pedro de Macorís', lat: 18.4539, lon: -69.3088, coastal: true },
+  { id: 'barahona', name: 'Barahona', lat: 18.2085, lon: -71.1008, coastal: true },
+  { id: 'samana', name: 'Samaná', lat: 19.2056, lon: -69.3369, coastal: true },
+  { id: 'san-cristobal', name: 'San Cristóbal', lat: 18.4167, lon: -70.1, coastal: true },
+  { id: 'duarte', name: 'Duarte', lat: 19.2167, lon: -70.25, coastal: false },
 ]
 
 export const BEACHES: Beach[] = [

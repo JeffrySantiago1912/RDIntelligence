@@ -12,6 +12,16 @@ export type MapMarker = {
   radius?: number
 }
 
+type MapViewProps = {
+  center?: LatLngExpression
+  zoom?: number
+  markers?: MapMarker[]
+  className?: string
+  children?: ReactNode
+  onMarkerClick?: (id: string) => void
+  selectedId?: string | null
+}
+
 function FitBounds({ markers }: { markers: MapMarker[] }) {
   const map = useMap()
   useEffect(() => {
@@ -26,21 +36,15 @@ function FitBounds({ markers }: { markers: MapMarker[] }) {
   return null
 }
 
-type Props = {
-  center?: LatLngExpression
-  zoom?: number
-  markers?: MapMarker[]
-  className?: string
-  children?: ReactNode
-}
-
 export function MapView({
   center = [18.7357, -70.1627],
   zoom = 8,
   markers = [],
   className = 'h-80',
   children,
-}: Props) {
+  onMarkerClick,
+  selectedId,
+}: MapViewProps) {
   return (
     <div className={`overflow-hidden rounded-xl border border-rd-deep/10 ${className}`}>
       <MapContainer center={center} zoom={zoom} scrollWheelZoom={false} className="h-full w-full">
@@ -50,24 +54,34 @@ export function MapView({
         />
         <FitBounds markers={markers} />
         {children}
-        {markers.map((m) => (
-          <CircleMarker
-            key={m.id}
-            center={m.position}
-            radius={m.radius ?? 10}
-            pathOptions={{
-              color: m.color ?? '#0b3d4a',
-              fillColor: m.color ?? '#2ec4b6',
-              fillOpacity: 0.75,
-              weight: 2,
-            }}
-          >
-            <Popup>
-              <strong>{m.label}</strong>
-              {m.detail ? <div>{m.detail}</div> : null}
-            </Popup>
-          </CircleMarker>
-        ))}
+        {markers.map((m) => {
+          const selected = selectedId === m.id
+          return (
+            <CircleMarker
+              key={m.id}
+              center={m.position}
+              radius={selected ? (m.radius ?? 10) + 4 : (m.radius ?? 10)}
+              pathOptions={{
+                color: selected ? '#0b3d4a' : (m.color ?? '#0b3d4a'),
+                fillColor: m.color ?? '#2ec4b6',
+                fillOpacity: selected ? 0.95 : 0.75,
+                weight: selected ? 3 : 2,
+              }}
+              eventHandlers={
+                onMarkerClick
+                  ? {
+                      click: () => onMarkerClick(m.id),
+                    }
+                  : undefined
+              }
+            >
+              <Popup>
+                <strong>{m.label}</strong>
+                {m.detail ? <div>{m.detail}</div> : null}
+              </Popup>
+            </CircleMarker>
+          )
+        })}
       </MapContainer>
     </div>
   )

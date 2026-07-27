@@ -5,7 +5,6 @@ import {
   currentHourIndex,
   fetchAirQuality,
   fetchForecast,
-  fetchMarine,
   maxNextHours,
   sumNextHours,
 } from '@/shared/api/openMeteo'
@@ -28,7 +27,7 @@ import { TIPS } from '@/data/tips'
 
 type RiskBundle = {
   inundacion: number
-  sargazo: number
+  sargazo: number | null
   incendio: number
   uv: number
   lluvia: number
@@ -36,12 +35,8 @@ type RiskBundle = {
   respiratorio: number
 }
 
-async function loadRisks(lat: number, lon: number): Promise<RiskBundle> {
-  const [forecast, air, marine] = await Promise.all([
-    fetchForecast(lat, lon),
-    fetchAirQuality(lat, lon),
-    fetchMarine(lat, lon).catch(() => null),
-  ])
+async function loadRisks(lat: number, lon: number, coastal: boolean): Promise<RiskBundle> {
+  const [forecast, air] = await Promise.all([fetchForecast(lat, lon), fetchAirQuality(lat, lon)])
   const idx = currentHourIndex(forecast.hourly.time)
   const rain5 = sumNextHours(forecast.hourly.precipitation, 5, idx)
   const rainMax = maxNextHours(forecast.hourly.precipitation, 5, idx)
@@ -52,11 +47,10 @@ async function loadRisks(lat: number, lon: number): Promise<RiskBundle> {
   const windDir = forecast.current?.wind_direction_10m ?? forecast.hourly.wind_direction_10m[idx]
   const dust = air.current?.dust ?? air.hourly.dust[idx] ?? 0
   const pm = air.current?.pm10 ?? air.hourly.pm10[idx] ?? 0
-  void marine
 
   return {
     inundacion: floodRiskFromPrecip(rain5, rainMax),
-    sargazo: sargassumIndex(new Date().getMonth() + 1, windDir, wind),
+    sargazo: coastal ? sargassumIndex(new Date().getMonth() + 1, windDir, wind) : null,
     incendio: fireRisk(temp, hum, wind, rain5),
     uv: clamp(uv * 9),
     lluvia: clamp((rain5 / 80) * 100),
@@ -119,23 +113,24 @@ export function RisksPage() {
   const province = PROVINCES.find((p) => p.id === provinceId) ?? PROVINCES[0]
 
   const { data, error, loading, reload } = useAsyncData(
-    () => loadRisks(province.lat, province.lon),
-    [province.lat, province.lon],
+    () => loadRisks(province.lat, province.lon, province.coastal),
+    [province.lat, province.lon, province.coastal],
   )
 
   const summary = useMemo(() => {
     if (!data) return []
-    return [
+    const rows: { key: string; label: string; score: number }[] = [
       { key: 'inundacion', label: 'Inundación', score: data.inundacion },
-      { key: 'sargazo', label: 'Sargazo', score: data.sargazo },
       { key: 'incendio', label: 'Incendio', score: data.incendio },
       { key: 'dengue', label: 'Dengue', score: data.dengue },
       { key: 'uv', label: 'Rayos UV', score: data.uv },
       { key: 'lluvia', label: 'Lluvia', score: data.lluvia },
       { key: 'respiratorio', label: 'Aire / respiratorio', score: data.respiratorio },
     ]
-      .map((r) => ({ ...r, score: Math.round(r.score) }))
-      .sort((a, b) => b.score - a.score)
+    if (data.sargazo != null) {
+      rows.push({ key: 'sargazo', label: 'Sargazo', score: data.sargazo })
+    }
+    return rows.map((r) => ({ ...r, score: Math.round(r.score) })).sort((a, b) => b.score - a.score)
   }, [data])
 
   const top = summary[0]
@@ -144,7 +139,7 @@ export function RisksPage() {
     <div className="space-y-6">
       <SectionHeader
         title="Riesgos en tu provincia"
-        description="Resumen fácil de entender: inundación, sargazo, incendio, dengue, sol, lluvia y calidad del aire. Cada número va de 0 a 100 (bajo es mejor)."
+        description="Resumen fácil de entender: inundación, incendio, dengue, sol, lluvia y calidad del aire. El sargazo solo aplica en provincias con costa. Cada número va de 0 a 100 (bajo es mejor)."
         sources={[
           { name: 'Open-Meteo', href: 'https://open-meteo.com/' },
           { name: 'Estimaciones RDIntelligence' },
@@ -164,6 +159,7 @@ export function RisksPage() {
           {PROVINCES.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
+              {!p.coastal ? ' (sin costa)' : ''}
             </option>
           ))}
         </select>
@@ -174,6 +170,13 @@ export function RisksPage() {
 
       {data && top ? (
         <>
+          {!province.coastal ? (
+            <div className="rounded-xl border border-sky-200 bg-sky-50/80 px-4 py-3 text-sm text-sky-950">
+              {province.name} no tiene costa: no aplican playas ni sargazo aquí. Esos indicadores solo
+              se muestran en provincias costeras.
+            </div>
+          ) : null}
+
           <div className="panel-strong flex flex-col gap-2 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-rd-slate">
@@ -196,7 +199,17 @@ export function RisksPage() {
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <RiskGauge score={data.inundacion} label="Inundación" tip={TIPS.floodRisk} />
-            <RiskGauge score={data.sargazo} label="Sargazo" tip={TIPS.sargassum} />
+            {data.sargazo != null ? (
+              <RiskGauge score={data.sargazo} label="Sargazo" tip={TIPS.sargassum} />
+            ) : (
+              <div className="panel flex flex-col justify-center p-4">
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-rd-slate">
+                  Sargazo
+                </p>
+                <p className="mt-2 font-display text-2xl font-bold text-rd-ink">No aplica</p>
+                <p className="mt-1 text-sm text-rd-slate">Provincia sin costa</p>
+              </div>
+            )}
             <RiskGauge score={data.incendio} label="Incendio" tip={TIPS.fireRisk} />
             <RiskGauge score={data.dengue} label="Dengue" tip={TIPS.dengueRisk} />
           </div>

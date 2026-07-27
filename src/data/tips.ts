@@ -57,8 +57,10 @@ export const TIPS = {
   gdpGrowth: 'Qué tanto creció (o cayó) la economía del país en el año, en porcentaje.',
   unemployment: 'Porcentaje de personas en la fuerza laboral que buscan trabajo y no lo tienen.',
   gdpCapita: 'Producción económica promedio por persona (USD). Sirve para comparar nivel de ingreso relativo.',
-  trafficNow: 'Nivel estimado de congestión ahora (0–100) en corredores típicos. Es demo, no GPS en vivo.',
-  traffic45: 'Proyección de congestión dentro de 45 minutos según hora pico tipificada.',
+  trafficNow:
+    'Nivel estimado de congestión ahora (0–100) en corredores monitoreados. Combina hora pico RD, clima vivo y tiempo base de ruta OSM/OSRM. No es GPS de Waze/Google.',
+  traffic45:
+    'Proyección de congestión y tiempo de viaje en ~45 minutos según la misma curva horaria y el clima actual.',
   rain7d: 'Lluvia acumulada esperada / reciente en ~7 días. Poca lluvia eleva el estrés hídrico.',
   soilTemp: 'Temperatura de la superficie del suelo. Afecta germinación y estrés de cultivos.',
 } as const

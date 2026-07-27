@@ -15,6 +15,7 @@ import { DenguePage } from '@/features/dengue/DenguePage'
 import { AgriculturePage } from '@/features/agriculture/AgriculturePage'
 import { FishingPage } from '@/features/fishing/FishingPage'
 import { TourismPage } from '@/features/tourism/TourismPage'
+import { ParksPage } from '@/features/parks/ParksPage'
 import { EconomyPage } from '@/features/economy/EconomyPage'
 import { WaterPage } from '@/features/water/WaterPage'
 import { RespiratoryPage } from '@/features/respiratory/RespiratoryPage'
@@ -40,6 +41,7 @@ export function AppRouter() {
           <Route path="agricola" element={<AgriculturePage />} />
           <Route path="pesca" element={<FishingPage />} />
           <Route path="turismo" element={<TourismPage />} />
+          <Route path="parques" element={<ParksPage />} />
           <Route path="economia" element={<EconomyPage />} />
           <Route path="agua" element={<WaterPage />} />
           <Route path="respiratorio" element={<RespiratoryPage />} />
