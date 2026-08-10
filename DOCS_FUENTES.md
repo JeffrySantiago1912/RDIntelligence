@@ -66,8 +66,8 @@ Las marcas, nombres y logotipos pertenecen a sus respectivos propietarios.
 ## Cómo correr
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Abrir la app y navegar cada módulo desde el menú lateral. La página **Fuentes de datos** resume esto mismo en la UI.

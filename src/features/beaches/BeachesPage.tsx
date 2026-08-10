@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { BEACHES } from '@/data/locations'
 import { useAsyncData } from '@/shared/hooks/useAsyncData'
 import {
@@ -28,12 +29,24 @@ async function loadBeach(lat: number, lon: number) {
 }
 
 export function BeachesPage() {
+  const [searchParams] = useSearchParams()
   const [beachId, setBeachId] = useState(BEACHES[0].id)
   const beach = BEACHES.find((b) => b.id === beachId) ?? BEACHES[0]
   const { data, error, loading, reload } = useAsyncData(
     () => loadBeach(beach.lat, beach.lon),
     [beach.lat, beach.lon],
   )
+
+  useEffect(() => {
+    const lugar = searchParams.get('lugar') ?? searchParams.get('id')
+    if (!lugar) return
+    if (!BEACHES.some((b) => b.id === lugar)) return
+    setBeachId(lugar)
+    const t = window.setTimeout(() => {
+      document.getElementById('beach-detail')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 120)
+    return () => window.clearTimeout(t)
+  }, [searchParams])
 
   const sargazoLabel =
     data && data.sargazo >= 65 ? 'Alto' : data && data.sargazo >= 35 ? 'Moderado' : 'Bajo'
@@ -72,11 +85,11 @@ export function BeachesPage() {
       {error ? <ErrorState message={error} onRetry={reload} /> : null}
 
       {data ? (
-        <>
+        <div id="beach-detail" className="scroll-mt-24 space-y-6">
           <div className="panel flex flex-wrap items-center gap-4 p-5">
             <div className={`h-4 w-4 rounded-full ${data.flag.tone}`} />
             <div>
-              <p className="text-xs uppercase tracking-wider text-rd-slate">Bandera</p>
+              <p className="text-xs uppercase tracking-wider text-rd-slate">Bandera · {beach.name}</p>
               <p className="font-display text-2xl font-bold leading-snug">
                 {data.flag.flag} · {data.flag.estado}
               </p>
@@ -152,7 +165,7 @@ export function BeachesPage() {
               </ul>
             </div>
           </div>
-        </>
+        </div>
       ) : null}
     </div>
   )

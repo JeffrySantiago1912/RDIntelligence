@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from '@/app/AppShell'
 import { HomePage } from '@/features/home/HomePage'
+import { DayPlanPage } from '@/features/dayplan/DayPlanPage'
 import { RisksPage } from '@/features/risks/RisksPage'
 import { ClimatePage } from '@/features/climate/ClimatePage'
 import { FloodsPage } from '@/features/floods/FloodsPage'
@@ -27,6 +28,7 @@ export function AppRouter() {
       <Routes>
         <Route element={<AppShell />}>
           <Route index element={<HomePage />} />
+          <Route path="que-hacer" element={<DayPlanPage />} />
           <Route path="riesgos" element={<RisksPage />} />
           <Route path="clima" element={<ClimatePage />} />
           <Route path="inundaciones" element={<FloodsPage />} />

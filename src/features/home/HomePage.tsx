@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Satellite } from 'lucide-react'
+import { ArrowRight, Compass, Satellite } from 'lucide-react'
 import { MODULES } from '@/data/modules'
 import { useAsyncData } from '@/shared/hooks/useAsyncData'
 import {
@@ -52,22 +52,23 @@ export function HomePage() {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
-              to="/riesgos"
+              to="/que-hacer"
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-rd-deep transition hover:bg-rd-mist"
             >
-              Ver riesgos en mi provincia
+              <Compass className="h-4 w-4" />
+              Qué hacer hoy?
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              to="/sismos"
+              to="/riesgos"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              Ver sismos
+              Riesgos en mi provincia
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           <p className="mt-6 max-w-2xl text-sm text-white/75">
-            Demo gratuita desarrollada por{' '}
+            Desarrollada por{' '}
             <a
               href={ABBATECH.url}
               target="_blank"
@@ -122,6 +123,27 @@ export function HomePage() {
             />
           </>
         ) : null}
+      </section>
+
+      <section className="panel flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between md:p-6">
+        <div className="max-w-2xl">
+          <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-rd-ocean">
+            <Compass className="h-3.5 w-3.5" />
+            Plan del día
+          </p>
+          <h2 className="mt-2 font-display text-2xl font-bold text-rd-ink">Qué hacer hoy?</h2>
+          <p className="mt-1 text-sm text-rd-slate md:text-base">
+            Sugerencias según clima de hoy, mañana o los próximos días. Lo recomendable es confirmar
+            siempre con la información oficial del gobierno antes de salir.
+          </p>
+        </div>
+        <Link
+          to="/que-hacer"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-rd-coral px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-rd-coral/90"
+        >
+          Ver recomendaciones
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </section>
 
       <section>

@@ -29,9 +29,14 @@ export function getRdNowParts(date = new Date()) {
   return { day: dayMap[weekday] ?? 1, hour, minute }
 }
 
+export function isParkOpenOnWeekday(schedule: ParkSchedule, weekday: number): boolean {
+  if (schedule.openDays.length === 0) return true
+  return schedule.openDays.includes(weekday)
+}
+
 export function isParkOpenNow(schedule: ParkSchedule, date = new Date()): boolean {
   const { day, hour, minute } = getRdNowParts(date)
-  if (schedule.openDays.length > 0 && !schedule.openDays.includes(day)) return false
+  if (!isParkOpenOnWeekday(schedule, day)) return false
 
   const now = hour * 60 + minute
   const open = schedule.openHour * 60 + schedule.openMinute
@@ -42,6 +47,12 @@ export function isParkOpenNow(schedule: ParkSchedule, date = new Date()): boolea
     return now >= open || now < close
   }
   return now >= open && now < close
+}
+
+/** Día de la semana (0=dom) en RD para hoy + offset (0=hoy). */
+export function getRdWeekdayOffset(dayOffset = 0, from = new Date()): number {
+  const { day } = getRdNowParts(from)
+  return (day + dayOffset) % 7
 }
 
 export function parkOpenStatus(park: Park, date = new Date()) {

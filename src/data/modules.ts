@@ -2,6 +2,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   Activity,
   CloudRain,
+  Compass,
   Droplets,
   Flame,
   Gauge,
@@ -32,6 +33,17 @@ export type ModuleDef = {
 
 /** Orden del menú: de más uso esperado en RD a menos (ciudadano promedio). */
 export const MODULES: ModuleDef[] = [
+  {
+    id: 'dayplan',
+    path: '/que-hacer',
+    title: 'Qué hacer hoy?',
+    short: 'Qué hacer hoy?',
+    description:
+      'Recomendaciones orientativas de parques y playas según el clima. Siempre confirma con fuentes oficiales del gobierno.',
+    icon: Compass,
+    accent: 'from-rd-coral to-rd-amber',
+    live: true,
+  },
   {
     id: 'climate',
     path: '/clima',
@@ -68,7 +80,8 @@ export const MODULES: ModuleDef[] = [
     path: '/playas',
     title: 'Estado de las playas',
     short: 'Playas',
-    description: 'Oleaje, UV, viento y bandera recomendada para bañistas.',
+    description:
+      'Oleaje, UV, viento y bandera para bañistas. Cruza con recomendaciones del día si dudas a cuál ir.',
     icon: Waves,
     accent: 'from-cyan-600 to-teal-400',
     live: true,
@@ -119,7 +132,7 @@ export const MODULES: ModuleDef[] = [
     title: 'Parques de RD',
     short: 'Parques',
     description:
-      'Guía orientativa de parques destacados: mapa, horarios y tarifas de referencia. Confirma siempre en fuente oficial.',
+      'Guía de parques destacados (mapa, horarios y tarifas). Úsala junto a “Qué hacer hoy?”; confirma siempre en fuentes oficiales.',
     icon: TreePine,
     accent: 'from-emerald-700 to-teal-500',
     live: true,
@@ -149,7 +162,8 @@ export const MODULES: ModuleDef[] = [
     path: '/turismo',
     title: 'Índice de turismo',
     short: 'Turismo',
-    description: 'Score compuesto por clima, sargazo y condiciones de playa.',
+    description:
+      'Score compuesto por clima, sargazo y condiciones de playa. Combínalo con “Qué hacer hoy?”.',
     icon: Sun,
     accent: 'from-yellow-600 to-rd-coral',
     live: true,
@@ -221,7 +235,18 @@ export const DATA_SOURCES = [
     id: 'open-meteo',
     name: 'Open-Meteo',
     url: 'https://open-meteo.com/',
-    usedBy: ['Clima', 'Inundaciones', 'Playas', 'Incendios', 'Agrícola', 'Aire', 'Riesgos', 'Parques', 'Tráfico'],
+    usedBy: [
+      'Qué hacer hoy?',
+      'Clima',
+      'Inundaciones',
+      'Playas',
+      'Incendios',
+      'Agrícola',
+      'Aire',
+      'Riesgos',
+      'Parques',
+      'Tráfico',
+    ],
     notes: 'Sin API key. Pronóstico, marina, calidad del aire y suelo.',
   },
   {
@@ -265,7 +290,7 @@ export const DATA_SOURCES = [
     id: 'parks-curated',
     name: 'Datos de referencia de parques (enlaces a MITUR / Medio Ambiente / sitios oficiales)',
     url: 'https://www.mitur.gob.do/',
-    usedBy: ['Parques'],
+    usedBy: ['Parques', 'Qué hacer hoy?'],
     notes:
       'Catálogo orientativo de lugares destacados. No es inventario oficial ni feed en tiempo real; el usuario debe validar horario y tarifas en la fuente oficial.',
   },
@@ -273,7 +298,7 @@ export const DATA_SOURCES = [
     id: 'heuristic',
     name: 'Modelos heurísticos RDIntelligence',
     url: '#',
-    usedBy: ['Sargazo', 'Apagones', 'Dengue', 'Tráfico', 'Turismo'],
+    usedBy: ['Sargazo', 'Apagones', 'Dengue', 'Tráfico', 'Turismo', 'Qué hacer hoy?'],
     notes:
       'Donde no hay API pública gratuita de sensores (EDE, sargazo oficial, sondas Waze/Google), se combinan reglas transparentes con datos abiertos (clima, rutas OSM).',
   },

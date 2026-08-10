@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   Clock,
   ExternalLink,
@@ -55,12 +56,29 @@ function markerColor(park: Park) {
 }
 
 export function ParksPage() {
+  const [searchParams] = useSearchParams()
   const [filters, setFilters] = useState<ChipFilter[]>([])
   const [province, setProvince] = useState('')
   const [municipality, setMunicipality] = useState('')
   const [selectedId, setSelectedId] = useState(PARKS[0]?.id ?? '')
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const [geoMessage, setGeoMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    const lugar = searchParams.get('lugar') ?? searchParams.get('id')
+    if (!lugar) return
+    if (!PARKS.some((p) => p.id === lugar)) return
+    setSelectedId(lugar)
+    setFilters([])
+    setProvince('')
+    setMunicipality('')
+    setGeoStatus('idle')
+    setGeoMessage(null)
+    const t = window.setTimeout(() => {
+      document.getElementById('park-detail')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 120)
+    return () => window.clearTimeout(t)
+  }, [searchParams])
 
   const filtered = useMemo(() => {
     return PARKS.filter((p) => {
@@ -347,7 +365,7 @@ export function ParksPage() {
       </div>
 
       {selected ? (
-        <article className="panel-strong overflow-hidden">
+        <article id="park-detail" className="panel-strong scroll-mt-24 overflow-hidden">
           <div className="gradient-brand px-5 py-5 text-white sm:px-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>

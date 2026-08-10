@@ -63,4 +63,6 @@ export const TIPS = {
     'Proyección de congestión y tiempo de viaje en ~45 minutos según la misma curva horaria y el clima actual.',
   rain7d: 'Lluvia acumulada esperada / reciente en ~7 días. Poca lluvia eleva el estrés hídrico.',
   soilTemp: 'Temperatura de la superficie del suelo. Afecta germinación y estrés de cultivos.',
+  dayPlan:
+    'Ranking orientativo de parques y playas según clima (lluvia, UV, temperatura, oleaje y sargazo estimado). Lo recomendable es priorizar siempre la información oficial del gobierno (COE, MITUR, Medio Ambiente, autoridades locales) antes de salir.',
 } as const

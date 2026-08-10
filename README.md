@@ -6,13 +6,23 @@ Frontend: **React + Vite + Tailwind**. Sin backend en esta fase: consume APIs gr
 
 ## Arranque
 
+Requiere [pnpm](https://pnpm.io/installation) (recomendado vía Corepack: `corepack enable`).
+
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
+```
+
+Otros scripts útiles:
+
+```bash
+pnpm build
+pnpm preview
+pnpm lint
 ```
 
 ## Módulos
 
-Riesgos · Clima · Inundaciones · Playas · Sargazo · Apagones · Tráfico · Incendios · Huracanes · Sismos · Dengue · Agrícola · Pesca · Turismo · Economía · Agua · Respiratorio
+Qué hacer hoy? · Riesgos · Clima · Inundaciones · Playas · Sargazo · Apagones · Tráfico · Incendios · Huracanes · Sismos · Dengue · Agrícola · Pesca · Turismo · Parques · Economía · Agua · Respiratorio
 
 Ver detalle de fuentes en [`DOCS_FUENTES.md`](./DOCS_FUENTES.md) o en la ruta `/fuentes` de la app.
