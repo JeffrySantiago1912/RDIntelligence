@@ -1,8 +1,8 @@
 export const ABBATECH = {
   name: 'AbbaTech',
-  url: 'https://jeffrysantiago1912.github.io/AbbaTech/',
+  url: 'https://abbatechcompany.netlify.app',
   disclaimer:
-    'Desarrollada por AbbaTech. No sustituye alertas oficiales del gobierno.',
+    'Desarrollado por AbbaTech. No sustituye alertas oficiales del gobierno.',
 } as const
 
 export const LEGAL_DISCLAIMER = {
